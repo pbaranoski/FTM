@@ -7,8 +7,10 @@ import shutil
 import sys
 import pandas as pd
 
-lastSavedTS = "2022-03-20-13:00:00"
+lastSavedTS = "2022-04-22-13:00:00"
 setChangedDirs = set()
+
+backupDriveLetter = "D"
 
 
 #######################################
@@ -59,7 +61,7 @@ def processDir(curDir):
     # Create List of Items in directory
     ##########################################
     listC = buildDirList(curDir)
-    curDirD = curDir.replace("C:","D:")
+    curDirD = curDir.replace("C:",f"{backupDriveLetter}:")
     listD = buildDirList(curDirD)
 
     ##########################################
@@ -80,7 +82,7 @@ def processDir(curDir):
     # Remove items from D: that do NOT exist on C:
     #########################################################
     print("\n*******************************")    
-    print("Items to remove from D:")
+    print(f"Items to remove from {backupDriveLetter}:")
     dfCMissing = dfDiffs.loc[dfDiffs["Drive_x"].isnull()]
 
     #print("What is not on C:\ drive")
@@ -89,13 +91,13 @@ def processDir(curDir):
     for row in dfCMissing.itertuples():
         # remove directory on D: that is NOT on C:
         if row.Type_y == 'D':
-            dir2Remove = "D:" + row.DirItem
+            dir2Remove = f"{backupDriveLetter}:" + row.DirItem
             if os.path.exists(dir2Remove):
                 print(dir2Remove)
                 shutil.rmtree(dir2Remove)
                     
         if row.Type_y == 'F':
-            file2Remove = "D:" + row.DirItem
+            file2Remove = f"{backupDriveLetter}:" + row.DirItem
             if os.path.exists(file2Remove):
                 print(file2Remove)
                 os.remove(file2Remove)
@@ -105,7 +107,7 @@ def processDir(curDir):
     # Add items to D: that exist on C: 
     #########################################################
     print("\n*******************************")
-    print("Items to Add to D:")
+    print(f"Items to Add to {backupDriveLetter}:")
     dfDMissing = dfDiffs.loc[dfDiffs["Drive_y"].isnull()]
 
     #print("What is missing on D:\ drive")
@@ -114,14 +116,14 @@ def processDir(curDir):
     for row in dfDMissing.itertuples():
         # remove directory on D: that is NOT on C:
         if row.Type_x == 'D':
-            dir2Add = "D:" + row.DirItem
+            dir2Add = f"{backupDriveLetter}:" + row.DirItem
             if not os.path.exists(dir2Add):
                 print(dir2Add)
                 os.mkdir(dir2Add)
                     
         if row.Type_x == 'F':
             file2Add = "C:" + row.DirItem
-            destFile = "D:" + row.DirItem
+            destFile = f"{backupDriveLetter}:" + row.DirItem
             if os.path.exists(file2Add):
                 print(destFile)
                 shutil.copyfile(file2Add, destFile)
@@ -139,10 +141,12 @@ def processDir(curDir):
 
 def main():
 
-    curDir = r"C:\Polish Archives\Nur\1890s"
+    curDir = r"C:\Polish Archives\Nur"
+    #curDir = r"C:\Polish Archives\Kuczyn"    
     #curDir = r"C:\Polish Archives\Boguty"
     #curDir = r"C:\Polish Archives\Czyżew"
- 
+    #curDir = r"C:\Polish Archives\Zuzela"
+
     processDir(curDir)
         
 

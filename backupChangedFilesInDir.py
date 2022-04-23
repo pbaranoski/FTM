@@ -6,8 +6,10 @@ import datetime
 import shutil
 import sys
 
-lastSavedTS = "2022-04-03-21:00:00"
+lastSavedTS = "2022-04-22-18:09:00"
 setChangedDirs = set()
+
+backupDriveLetter = "D"
 
 ########################################
 # recursive function
@@ -34,7 +36,7 @@ def processDir(curDir):
             ####################################
             # Make sure dest Directory exists
             ####################################
-            destDir = fullPathDirItem.replace("C:","D:")
+            destDir = fullPathDirItem.replace("C:",f"{backupDriveLetter}:")
             if not os.path.exists(destDir):
                 os.mkdir(destDir)
 
@@ -60,7 +62,7 @@ def processDir(curDir):
                 if CDriveFileFmtTS > lastSavedTS:
 
                     # D: drive filename
-                    fullPathDestFile = fullPathDirItem.replace("C:","D:")
+                    fullPathDestFile = fullPathDirItem.replace("C:",f"{backupDriveLetter}:")
 
                     # if D: drive file exists --> only copy if C: drive version is newer                                
                     if os.path.isfile(fullPathDestFile):

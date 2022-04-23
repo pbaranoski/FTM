@@ -55,6 +55,10 @@ def processDir(curDir, sParish):
                 #####################################################
                 # Determine directory year
                 #####################################################
+                # split into "head/tail". 
+                # Tail is everything after last slash.
+                # Gets Full Path without current basename 
+                # --> gets directory right before basename
                 dirParts = os.path.split(curDir)
                 sYear = os.path.basename(dirParts[0])
                 #print(sYear)
@@ -67,7 +71,7 @@ def processDir(curDir, sParish):
                 if dirItem.find(sSearchStr) != -1:
                     continue
 
-                # DocType is all lower case --> upper case it
+                # If DocType is all lower case --> fix it 
                 sDocTypeNoSLower = sDocTypeNoS.lower()
                 sSearchStr = f"{sYear}_{sParish}_{sDocTypeNoSLower}"
                 if dirItem.find(sSearchStr) != -1:
@@ -139,7 +143,9 @@ def main():
 
     #curDir = r"C:\Polish Archives\Nur\1810s\1810_1811"
     #curDir = r"C:\Polish Archives\Nur\1890s\1897"
-    curDir = r"C:\Polish Archives\Nur\1900s"
+    curDir = r"C:\Polish Archives\Nur"
+    #curDir = r"C:\Polish Archives\Nur\1900s\1902"
+    #curDir = r"C:\Polish Archives\Kuczyn"
     #sFilenameStem = "1870_Nur"
     sParish = "Nur"
  
